@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Router } from 'react-router';
 import { Provider } from 'react-redux';
-import { Router } from 'react-router'
-import configureState from 'store';
-import { syncHistoryWithStore } from 'react-router-redux'
-import routes from './routes';
+import { syncHistoryWithStore } from 'react-router-redux';
 import createBrowserHistory from 'history/createBrowserHistory'
+import configureStore from './store';
+import routes from './routes';
 
-
-const store = configureState();
-const history = syncHistoryWithStore(createBrowserHistory, store);
-
+const store = configureStore();
+const history = syncHistoryWithStore(createBrowserHistory(), store);
 
 ReactDOM.render((
     <Provider store={ store }>
@@ -18,6 +16,5 @@ ReactDOM.render((
             { routes }
         </Router>
     </Provider>
-    ),
-    document.querySelector('#app')
-)
+),
+document.querySelector('#app'));
