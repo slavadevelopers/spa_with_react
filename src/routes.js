@@ -1,10 +1,12 @@
 import React from 'react';
-import { Route } from 'react-router';
-import App from './app';
+import { Switch } from 'react-router-dom';
+import { HomeRoute } from './components/page/home/index';
+import { ContactRoute } from './components/page/contact/index';
 
 
 export default (
-    <Route component={ App } path={ App.path } >
-        
-    </Route>
+    <Switch>
+        { HomeRoute }
+        { ContactRoute }
+    </Switch>
 );

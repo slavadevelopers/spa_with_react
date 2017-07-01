@@ -1,5 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DevTools } from './utils/index'
+import { Header } from './components/index';
+
+
 
 export default class App extends React.Component {
     
@@ -8,7 +12,7 @@ export default class App extends React.Component {
     render() {
         return (
             <div>
-                <h1>Hello world!</h1>
+                <Header />
                 { process.env.NODE_ENV !== 'production' ? <DevTools /> : null }
             </div>
         );
