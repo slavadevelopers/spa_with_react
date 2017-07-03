@@ -1,24 +1,25 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Input from '../../components/ui/input/index';
 import { bindAll } from 'lodash';
+import { connect } from 'react-redux';
+import { addTodo } from './actions'
 import './styles.less';
 
-export default class Home extends React.Component {
+class Home extends React.Component {
 
     static path = '/';
+
+    static propTypes = {
+        home: PropTypes.object.isRequired,
+        dispatch: PropTypes.func.isRequired
+    }
 
     constructor(props) {
         super(props);
 
         this.state = {
-            todoName: '',
-            todoList: [
-                {
-                    id: 1,
-                    name: 'ToDo-1'
-                }
-            ],
-            error: ''
+            todoName: ''
         }
 
         bindAll(this, ['renderTodo', 'onChangeInput', 'addTodo']);
@@ -29,16 +30,11 @@ export default class Home extends React.Component {
     }
 
     addTodo() {
-        if (this.state.todoName === '') {
-            this.setState({ error: 'Нельзя добавить пустую запись' });
-            return;
-        };
-        const id = this.state.todoList[this.state.todoList.length - 1].id + 1;
+        const { todoList } = this.props.home;
+        const id = todoList[todoList.length - 1].id + 1;
         const name = this.state.todoName;
-        const todoItem = { id, name }
-        const todoList = this.state.todoList;
-        todoList.push(todoItem);
-        this.setState({ todoName: '', error: '', todoList });
+        this.props.dispatch( addTodo(id, name) );
+        this.setState({ todoName: '' });
     }
 
     renderTodo(item) {
@@ -48,7 +44,8 @@ export default class Home extends React.Component {
     }
 
     render() {
-        const { todoName, todoList, error } = this.state;
+        const { todoName } = this.state;
+        const { todoList, error } = this.props.home;
         return (
                 <div className='container-fluid'>
                     <div className='row'>
@@ -77,3 +74,13 @@ export default class Home extends React.Component {
         );
     }
 }
+
+
+function mapStateToProps(state) {
+    return {
+        home: state.home
+    }
+}
+
+
+export default connect(mapStateToProps)(Home);
