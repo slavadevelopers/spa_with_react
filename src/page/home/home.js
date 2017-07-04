@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import Input from '../../components/ui/input/index';
 import { bindAll } from 'lodash';
 import { connect } from 'react-redux';
-import { addTodo, likes, deleteItem } from './actions';
+import { addTodo, likes, deleteItem, getTodoList } from './actions';
 import classNames from 'classnames';
+import { LS } from '../../utils/index';
+import Loader from '../../components/ui/loader/index';
 import './styles.less';
 
 class Home extends React.Component {
@@ -24,6 +26,10 @@ class Home extends React.Component {
         };
 
         bindAll(this, ['renderTodo', 'onChangeInput', 'addTodo']);
+    }
+
+    componentWillMount() {
+        this.props.dispatch( getTodoList() );
     }
 
     onChangeInput(value) {
@@ -65,12 +71,16 @@ class Home extends React.Component {
     render() {
         const { todoName } = this.state;
         const { todoList, error } = this.props.home;
+        LS.set('todoList', todoList);
         return (
                 <div className='container-fluid'>
                     <div className='row'>
                         <div className='col-12'>
                             <ul className='pl-15'>
-                                { todoList.map(this.renderTodo) }
+                                {
+                                    todoList.length === 1 ? <Loader /> :
+                                    todoList.map(this.renderTodo)
+                                }
                             </ul>
                             <div className='row col-6'>
                                 <div className='col-8'>
@@ -91,6 +101,10 @@ class Home extends React.Component {
                     </div>
                 </div>
         );
+    }
+
+    componentWillUnmount() {
+        LS.set('todoList', this.props.home.todoList);
     }
 }
 

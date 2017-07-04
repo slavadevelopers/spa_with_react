@@ -1,6 +1,9 @@
+import { LS, delay } from '../../utils/index';
+
 export const ADD_TODO = 'ADD_TODO';
 export const LIKES ='LIKES';
 export const DELETE_ITEM ='DELETE_ITEM';
+export const GET_TODO_LIST = 'GET_TODO_LIST';
 
 export function addTodo(id, name) {
     let error = '';
@@ -22,13 +25,22 @@ export function likes(item) {
     }
 }
 
-export function deleteItem(item, todoList) {
-    let error = '';
-    if (todoList.length === 1) {
-        error = 'Список не должен быть пустым';
-    }
+export function deleteItem(item) {
     return {
         type: DELETE_ITEM,
-        item, error
+        item
+    }
+}
+
+export function getTodoList() {
+    const todoList = LS.get('todoList');
+
+    return (dispatch) => {
+        delay(4000).then(() => {
+            dispatch({
+                type: GET_TODO_LIST,
+                todoList
+            });
+        });
     }
 }
