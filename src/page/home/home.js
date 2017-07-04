@@ -14,14 +14,14 @@ class Home extends React.Component {
     static propTypes = {
         home: PropTypes.object.isRequired,
         dispatch: PropTypes.func.isRequired
-    }
+    };
 
     constructor(props) {
         super(props);
 
         this.state = {
             todoName: ''
-        }
+        };
 
         bindAll(this, ['renderTodo', 'onChangeInput', 'addTodo']);
     }

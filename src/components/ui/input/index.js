@@ -29,7 +29,7 @@ export default class Input extends React.Component {
     render() {
         const divClasses = classNames({
             'form-control': true,
-            'form-control-danger': this.props.error ? true : false
+            'form-control-danger': !!this.props.error
         });
 
         const { value } = this.props;
