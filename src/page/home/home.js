@@ -91,7 +91,7 @@ class Home extends React.Component {
                                     <button
                                         className='btn btn-primary w-100'
                                         onClick={ this.addTodo }
-                                    >Add ToDo</button>
+                                    >Add Todo</button>
                                 </div>
                             </div>
                         </div>
