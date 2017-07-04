@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import Input from '../../components/ui/input/index';
 import { bindAll } from 'lodash';
 import { connect } from 'react-redux';
-import { addTodo } from './actions'
+import { addTodo, likes, deleteItem } from './actions';
+import classNames from 'classnames';
 import './styles.less';
 
 class Home extends React.Component {
@@ -34,13 +35,31 @@ class Home extends React.Component {
         const id = todoList[todoList.length - 1].id + 1;
         const name = this.state.todoName;
         this.props.dispatch( addTodo(id, name) );
-        this.setState({ todoName: '' });
+        this.setState({ todoName: ''});
     }
 
     renderTodo(item) {
+        const classLikeBtn = classNames('btn btn-secondary', {
+            'btn-success': item.liked
+        });
         return (
-            <li key={ item.id }>{ item.name }</li>
+            <li key={ item.id } className='list-item'>
+                { item.name }
+                <span className='btn-panele'>
+                    <button onClick={this.deleteItem.bind(this, item)} className='btn btn-panele__btn btn-secondary'>Delete</button>
+                    <button onClick={this.likes.bind(this, item)} className={ classLikeBtn }>Like</button>
+                </span>
+            </li>
         );
+    }
+
+    likes(item) {
+        this.props.dispatch(likes(item));
+    }
+
+    deleteItem(item) {
+        const { todoList } = this.props.home;
+        this.props.dispatch(deleteItem(item, todoList));
     }
 
     render() {
@@ -49,11 +68,11 @@ class Home extends React.Component {
         return (
                 <div className='container-fluid'>
                     <div className='row'>
-                        <div className='col-4'>
+                        <div className='col-12'>
                             <ul className='pl-15'>
                                 { todoList.map(this.renderTodo) }
                             </ul>
-                            <div className='row'>
+                            <div className='row col-6'>
                                 <div className='col-8'>
                                     <Input
                                         value={ todoName }
