@@ -1,14 +1,9 @@
 import { ADD_TODO, LIKES, DELETE_ITEM, GET_TODO_LIST } from './actions';
 
 const initialState = {
-    todoList: [
-        {
-            id: 1,
-            name: 'Todo - 1',
-            liked: false
-        }
-    ],
-    error: ''
+    todoList: [],
+    error: '',
+    isLoading: true
 };
 
 function homeReducer(state = initialState, action) {
@@ -35,7 +30,10 @@ function homeReducer(state = initialState, action) {
             return Object.assign({}, state, { todoList: idSort, error: action.error });
         break;
         case GET_TODO_LIST:
-            return Object.assign({}, state, { todoList: action.todoList });
+            return Object.assign({}, state, {
+                todoList: action.todoList,
+                isLoading: false
+            });
         break;
         default:
             return state;

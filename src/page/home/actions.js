@@ -5,10 +5,16 @@ export const LIKES ='LIKES';
 export const DELETE_ITEM ='DELETE_ITEM';
 export const GET_TODO_LIST = 'GET_TODO_LIST';
 
-export function addTodo(id, name) {
+export function addTodo(todoList, name) {
     let error = '';
     if (!name) {
         error = 'Нельзя добавить пустое поле'
+    }
+
+    let id = 1;
+
+    if (todoList.length) {
+        id = todoList[todoList.length - 1].id + 1;
     }
     return {
         type: ADD_TODO,

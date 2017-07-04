@@ -26,9 +26,7 @@ class Home extends React.Component {
         };
 
         bindAll(this, ['renderTodo', 'onChangeInput', 'addTodo']);
-    }
 
-    componentWillMount() {
         this.props.dispatch( getTodoList() );
     }
 
@@ -37,10 +35,7 @@ class Home extends React.Component {
     }
 
     addTodo() {
-        const { todoList } = this.props.home;
-        const id = todoList[todoList.length - 1].id + 1;
-        const name = this.state.todoName;
-        this.props.dispatch( addTodo(id, name) );
+        this.props.dispatch( addTodo(this.props.home.todoList, this.state.todoName) );
         this.setState({ todoName: ''});
     }
 
@@ -70,23 +65,25 @@ class Home extends React.Component {
 
     render() {
         const { todoName } = this.state;
-        const { todoList, error } = this.props.home;
+        const { todoList, error, isLoading } = this.props.home;
         LS.set('todoList', todoList);
         return (
                 <div className='container-fluid'>
                     <div className='row'>
                         <div className='col-12'>
                             <ul className='pl-15'>
-                                {
-                                    todoList.length === 1 ? <Loader /> :
-                                    todoList.map(this.renderTodo)
+                                { isLoading ?
+                                    <Loader />
+                                    : todoList.length
+                                        ? todoList.map(this.renderTodo)
+                                        : 'Элементов нет'
                                 }
                             </ul>
                             <div className='row col-6'>
                                 <div className='col-8'>
                                     <Input
                                         value={ todoName }
-                                        onChange={this.onChangeInput}
+                                        onChange={ this.onChangeInput }
                                         error={ error }
                                     />
                                 </div>
